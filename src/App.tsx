@@ -87,6 +87,10 @@ export class App extends React.PureComponent<{}, IAppState> {
       } else {
         const booking: IBooking = createBooking(bookingTime, true);
         this.addBooking(booking);
+        toast(
+          `Your booking has been made on ${bookingTime.format('dddd')}, at ${bookingTime.format('HH:mm')}!`,
+          { type: 'success' },
+        );
       }
     } else {
       toast('This time slot is not available!', { type: 'info' });
