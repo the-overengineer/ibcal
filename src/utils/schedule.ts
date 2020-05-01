@@ -85,6 +85,26 @@ export const createBooking = (at: moment.Moment, isByCurrentUser: boolean): IBoo
 });
 
 /**
+ * Update existing multi-day schedule by inserting a booking.
+ * Does not mutate the original, returning a copy instead.
+ * Does not validate for collision, the responsibility for that is on the caller.
+ *
+ * @param schedules Existing schedules for some number of days.
+ * @param booking New booking
+ */
+export const updateWithBooking = (schedules: IDaySchedule[], booking: IBooking): IDaySchedule[] =>
+  schedules.map((schedule) => {
+    if (schedule.date.isSame(booking.from, 'date')) {
+      return {
+        ...schedule,
+        bookings: [...schedule.bookings, booking],
+      };
+    }
+
+    return schedule;
+  });
+
+/**
  * Fills a calendar schedule with random bookings by "not current user".
  * It will throw an exception if it is impossible to find a booking.
  * Respects previous bookings and breaks.
@@ -107,18 +127,7 @@ export const fillWithRandomBookings = (daySchedules: IDaySchedule[], count: numb
 
   const bookingDate = pickOneAtRandom(candidates);
   const booking = createBooking(bookingDate, false);
-
-  // Update the day for which the schedule was selected with a new booking
-  const updatedSchedules = daySchedules.map((schedule) => {
-    if (schedule.date.isSame(booking.from, 'date')) {
-      return {
-        ...schedule,
-        bookings: [...schedule.bookings, booking],
-      };
-    }
-
-    return schedule;
-  });
+  const updatedSchedules = updateWithBooking(daySchedules, booking);
 
   return fillWithRandomBookings(updatedSchedules, count - 1);
 }

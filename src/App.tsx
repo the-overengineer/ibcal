@@ -12,6 +12,7 @@ import {
   fillWithRandomBookings,
   getSchedule,
   createBooking,
+  updateWithBooking,
 } from 'utils/schedule';
 
 import styles from './App.module.css';
@@ -82,16 +83,7 @@ export class App extends React.PureComponent<{}, IAppState> {
   }
 
   private addBooking = (booking: IBooking) => {
-    const schedules = this.state.schedules.map((schedule) => {
-      if (schedule.date.isSame(booking.from, 'day')) {
-        return {
-          ...schedule,
-          bookings: [...schedule.bookings, booking],
-        }
-      } else {
-        return schedule;
-      }
-    });
+    const schedules = updateWithBooking(this.state.schedules, booking);
 
     this.setState({ schedules });
   }
