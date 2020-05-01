@@ -1,8 +1,13 @@
 .App {
-  margin: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (min-width: 1200px) {
+  .App {
+    margin: 80px;
+  }
 }
 
 .Calendar {

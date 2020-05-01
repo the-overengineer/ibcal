@@ -8,8 +8,8 @@
 
   display: flex;
   flex-direction: column;
-  /* Prefered width */
-  width: calc(7 * var(--dayWidth) + var(--hoursWidth));
+  /* Prefered width, extra 2px to account for borders */
+  width: calc(7 * var(--dayWidth) + var(--hoursWidth) + 2px);
   max-width: 100%;
   background-color: var(--backgroundColor);
   border: 1px solid var(--themePrimaryColor);
@@ -34,6 +34,7 @@
   width: var(--hoursWidth);
   display: flex;
   flex-direction: column;
+  border-right: 1px solid var(--themePrimaryColor);
 }
 
 .Days {
@@ -41,12 +42,17 @@
   display: flex;
   flex-direction: row;
   min-width: var(--dayWidth);
+  overflow: auto;
 }
 
 .Day {
   flex: 1 1;
   min-width: var(--dayWidth);
   border-left: 1px solid var(--themePrimaryColor);
+}
+
+.Day:first-child {
+  border-left: none;
 }
 
 .HourHeader,

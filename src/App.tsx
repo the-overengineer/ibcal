@@ -10,13 +10,11 @@ import { getSchedule } from 'utils/schedule';
 
 const SHOW_DAYS: number = 7;
 
-interface IApp {}
-
 interface IAppState {
   schedules: IDaySchedule[];
 }
 
-export class App extends React.PureComponent<IApp, IAppState> {
+export class App extends React.PureComponent<{}, IAppState> {
   public state: IAppState = {
     schedules: [],
   }
