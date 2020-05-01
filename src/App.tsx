@@ -29,14 +29,16 @@ export class App extends React.PureComponent<IApp, IAppState> {
 
   public render() {
     return (
-      <WeekCalendar
-        className={styles.Calendar}
-        startsFrom={this.getTomorrow()}
-        showsDays={SHOW_DAYS}
-        title='Schedule Your Appointment'
-        onSegmentClick={this.onReserve}
-        schedules={this.state.schedules}
-      />
+      <div className={styles.App}>
+        <WeekCalendar
+          className={styles.Calendar}
+          startsFrom={this.getTomorrow()}
+          showsDays={SHOW_DAYS}
+          title='Schedule Your Appointment'
+          onSegmentClick={this.onReserve}
+          schedules={this.state.schedules}
+        />
+      </div>
     );
   }
 

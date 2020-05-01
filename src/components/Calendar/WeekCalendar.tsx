@@ -6,7 +6,7 @@ import {
   IDaySchedule,
   Availability,
 } from 'model/schedule';
-import { earliestDateTime, latestDateTime, getNDays } from 'utils/date';
+import { earliestDateByTimeUnit, latestDateByTimeUnit, getNDays } from 'utils/date';
 
 import { HourList } from './HourList';
 import { Day } from './Day';
@@ -31,6 +31,7 @@ export class WeekCalendar extends React.PureComponent<IWeekCalendar> {
       className,
       title,
       onSegmentClick,
+      schedules,
     } = this.props;
 
     const weekDates = this.getWeekDates();
@@ -53,6 +54,7 @@ export class WeekCalendar extends React.PureComponent<IWeekCalendar> {
                   date={date}
                   fromHour={startingHour}
                   toHour={endingHour}
+                  schedule={schedules.find((_) => _.date.isSame(date, 'day'))}
                   onSegmentClick={onSegmentClick}
                 />
               ))
@@ -72,17 +74,17 @@ export class WeekCalendar extends React.PureComponent<IWeekCalendar> {
       .map((schedule: IDaySchedule) => schedule.schedule?.workDayFrom)
       .filter((time) => time != null) as moment.Moment[];
 
-    const earliestHour = earliestDateTime(allStartingHours)?.hour() ?? 0;
+    const earliestHour = earliestDateByTimeUnit(allStartingHours, 'hour')?.hour() ?? 0;
     return Math.max(earliestHour - TIME_PADDING_HOURS, 0);
   }
 
   private getEndingHour = () => {
     const { schedules } = this.props;
-    const allStartingHours = schedules
-      .map((schedule: IDaySchedule) => schedule.schedule?.workDayFrom)
+    const allEndingHours = schedules
+      .map((schedule: IDaySchedule) => schedule.schedule?.workDayTo)
       .filter((time) => time != null) as moment.Moment[];
 
-    const latestHour = latestDateTime(allStartingHours)?.hour() ?? 24;
-    return Math.max(latestHour + TIME_PADDING_HOURS, 0);
+    const latestHour = latestDateByTimeUnit(allEndingHours, 'hour')?.hour() ?? 23;
+    return Math.min(latestHour + TIME_PADDING_HOURS, 23);
   }
 }

@@ -20,9 +20,9 @@ export interface IDaySchedule {
 }
 
 export enum Availability {
-  NotWorking,
-  OnBreak,
-  ReservedByOther,
-  ReservedByUser,
-  Available,
+  NotWorking = 'NotWorking',
+  OnBreak = 'OnBreak',
+  ReservedByOther = 'ReservedByOther',
+  ReservedByUser = 'ReservedByUser',
+  Available = 'Available',
 }

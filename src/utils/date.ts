@@ -4,20 +4,20 @@ import { leftPad } from './string';
 const SATURDAY: number = 6;
 const SUNDAY: number = 7;
 
-export const earliestDateTime = (dateTimes: moment.Moment[]): moment.Moment | undefined =>
+export const earliestDateByTimeUnit = (dateTimes: moment.Moment[], unit: moment.unitOfTime.All): moment.Moment | undefined =>
   dateTimes.reduce(
-    (earliest: moment.Moment | undefined, current: moment.Moment) => earliest == null || current.isBefore(earliest, 'minutes') ? current : earliest,
+    (earliest: moment.Moment | undefined, current: moment.Moment) => earliest == null || current.get(unit) < earliest.get(unit) ? current : earliest,
     undefined,
   );
 
-export const latestDateTime = (dateTimes: moment.Moment[]): moment.Moment | undefined =>
+export const latestDateByTimeUnit = (dateTimes: moment.Moment[], unit: moment.unitOfTime.All): moment.Moment | undefined =>
   dateTimes.reduce(
-    (earliest: moment.Moment | undefined, current: moment.Moment) => earliest == null || current.isAfter(earliest, 'minutes') ? current : earliest,
+    (latest: moment.Moment | undefined, current: moment.Moment) => latest == null || current.get(unit) > latest.get(unit) ? current : latest,
     undefined,
   );
 
 export const getThirtyMinuteIntervals = (startingHour: number, endingHour: number): string[] => {
-  const numberOfSegments = endingHour - startingHour + 1;
+  const numberOfSegments = 2 * (endingHour - startingHour + 1);
   return Array(numberOfSegments)
     .fill(startingHour)
     .map((originalHour, index) => originalHour + Math.floor(index / 2))
@@ -33,7 +33,7 @@ export const getThirtyMinuteIntervalsAsDateTimes = (date: moment.Moment, startin
 
 export const getNDays = (startingDate: moment.Moment, count: number): moment.Moment[] =>
   Array(count).fill(startingDate.clone().set('hours', 0).set('minutes', 0)).map(
-    (date: moment.Moment, index: number) => date.add(index, 'days'),
+    (date: moment.Moment, index: number) => date.clone().add(index, 'days'),
   );
 
 export const isWithinRange = (dateTime: moment.Moment, from: moment.Moment, to: moment.Moment): boolean =>

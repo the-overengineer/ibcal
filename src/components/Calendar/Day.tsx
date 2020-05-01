@@ -75,7 +75,7 @@ export class Day extends React.PureComponent<IDay> {
     return Availability.Available;
   }
 
-  private getAdditionalStyles = (dateTime: moment.Moment): string | undefined => {
+  private getAdditionalStyles = (dateTime: moment.Moment): string => {
     const availability = this.getAvailability(dateTime);
 
     switch (availability) {
@@ -83,6 +83,7 @@ export class Day extends React.PureComponent<IDay> {
       case Availability.OnBreak: return styles.OnBreak;
       case Availability.ReservedByUser: return styles.ReservedByUser;
       case Availability.ReservedByOther: return styles.ReservedByOther;
+      default: return styles.Available;
     }
   }
 

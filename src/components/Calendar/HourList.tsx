@@ -2,7 +2,7 @@ import React from 'react';
 
 import { getThirtyMinuteIntervals } from 'utils/date';
 
-import styles from './HourList.module.css';
+import styles from './Calendar.module.css';
 
 interface IHourList {
   startingHour: number;

@@ -1,7 +1,104 @@
---theme-color: darkblue;
+.WeekCalendar {
+  --themePrimaryColor: #7D7D98;
+  --unavailableColor: #E6E6E6;
+  --availableColor: #FFFFFF;
+  --backgroundColor: #FFFFFF;
+  --hoursWidth: 60px;
+  --dayWidth: 120px;
 
-.Calendar {
   display: flex;
   flex-direction: column;
-  background-color: var(--theme-color);
+  /* Prefered width */
+  width: calc(7 * var(--dayWidth) + var(--hoursWidth));
+  max-width: 100%;
+  background-color: var(--backgroundColor);
+  border: 1px solid var(--themePrimaryColor);
+}
+
+.Title {
+  font-size: 15px;
+  font-weight: bold;
+  padding: 16px 24px;
+  color: var(--backgroundColor);
+  background-color: var(--themePrimaryColor);
+  text-align: center;
+}
+
+.Columns {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.HourList {
+  width: var(--hoursWidth);
+  display: flex;
+  flex-direction: column;
+}
+
+.Days {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row;
+  min-width: var(--dayWidth);
+}
+
+.Day {
+  flex: 1 1;
+  min-width: var(--dayWidth);
+  border-left: 1px solid var(--themePrimaryColor);
+}
+
+.HourHeader,
+.Hour,
+.DayName,
+.DaySegment {
+  height: 40px;
+  padding: 8px 16px;
+}
+
+.Hour {
+  font-size: 14px;
+  border-top: 1px solid var(--themePrimaryColor);
+}
+
+.HourHeader + .Hour {
+  border-top: none;
+}
+
+.DayName {
+  font-size: 15px;
+  text-align: center;
+  border-bottom: 1px solid var(--themePrimaryColor);
+}
+
+.DaySegment {
+  width: 100%;
+}
+
+.Available {
+  border-bottom: 1px solid var(--unavailableColor);
+  background-color: var(--availableColor);
+}
+
+.NotWorking {
+  background-color: var(--unavailableColor);
+}
+
+.OnBreak {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    var(--unavailableColor) 10px,
+    var(--unavailableColor) 20px
+  );
+}
+
+.ReservedByUser {
+
+}
+
+.ReservedByOther {
+
 }
