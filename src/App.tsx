@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import { WeekCalendar } from 'components/Calendar/WeekCalendar';
 import {
@@ -25,6 +26,8 @@ const MAX_BOOKINGS_PER_DAY: number = 1;
 interface IAppState {
   schedules: IDaySchedule[];
 }
+
+toast.configure(); // Initialise notifications
 
 export class App extends React.PureComponent<{}, IAppState> {
   public state: IAppState = {
@@ -72,13 +75,21 @@ export class App extends React.PureComponent<{}, IAppState> {
       const userBookingsToday = userBookings.filter((booking) => booking.from.isSame(bookingTime, 'day'));
 
       if (userBookings.length >= MAX_BOOKINGS_PER_WEEK) {
-        throw new Error(`You cannot make more than ${MAX_BOOKINGS_PER_WEEK} booking(s) a week. Please schedule your appointment on another week!`)
+        toast(
+          `You cannot make more than ${MAX_BOOKINGS_PER_WEEK} booking(s) a week. Please schedule your appointment on another week!`,
+          { type: 'warning' },
+        );
       } else if (userBookingsToday.length >= MAX_BOOKINGS_PER_DAY) {
-        throw new Error(`You cannot make more than ${MAX_BOOKINGS_PER_DAY} booking(s) a day. Please schedule your appointment on another day`);
+        toast(
+          `You cannot make more than ${MAX_BOOKINGS_PER_DAY} booking(s) a day. Please schedule your appointment on another day`,
+          { type: 'warning' },
+        );
       } else {
         const booking: IBooking = createBooking(bookingTime, true);
         this.addBooking(booking);
       }
+    } else {
+      toast('This time slot is not available!', { type: 'info' });
     }
   }
 

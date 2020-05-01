@@ -72,6 +72,8 @@ const getAvailableSlotTimes = (day: IDaySchedule): moment.Moment[] => {
   return getThirtyMinuteIntervalsAsDateTimes(
     day.date, day.schedule.workDayFrom.hour(), day.schedule.workDayTo.hours()
   ).filter(
+    (slot) => isWithinTimeSlot(slot, day.schedule!.workDayFrom, day.schedule!.workDayTo)
+  ).filter(
     (slot) => !isWithinTimeSlot(slot, day.schedule!.breakFrom, day.schedule!.breakTo),
   ).filter(
     (slot) => !day.bookings.some((booking) => booking.from.isSame(slot, 'minute')),
