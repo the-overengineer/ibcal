@@ -38,6 +38,7 @@ export class Day extends React.PureComponent<IDay> {
           segments.map((segment) => (
             <div
               key={segment.toString()}
+              title={this.getText(segment)}
               className={classNames(styles.DaySegment, this.getAdditionalStyles(segment))}
               onClick={() => this.onClick(segment)}
             />
@@ -84,6 +85,18 @@ export class Day extends React.PureComponent<IDay> {
       case Availability.ReservedByUser: return styles.ReservedByUser;
       case Availability.ReservedByOther: return styles.ReservedByOther;
       default: return styles.Available;
+    }
+  }
+
+  private getText = (dateTime: moment.Moment): string | undefined => {
+    const availability = this.getAvailability(dateTime);
+
+    switch (availability) {
+      case Availability.NotWorking: return 'We are not open';
+      case Availability.OnBreak: return 'We are on break';
+      case Availability.ReservedByOther: return 'Slot already taken';
+      case Availability.ReservedByUser: return `Your booking at ${dateTime.format('HH:mm')}`;
+      default: return;
     }
   }
 
