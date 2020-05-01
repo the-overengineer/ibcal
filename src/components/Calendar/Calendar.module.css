@@ -2,6 +2,7 @@
   --themePrimaryColor: #7D7D98;
   --unavailableColor: #E6E6E6;
   --availableColor: #FFFFFF;
+  --bookedColor: darkorange;
   --backgroundColor: #FFFFFF;
   --hoursWidth: 60px;
   --dayWidth: 120px;
@@ -80,11 +81,13 @@
 
 .DaySegment {
   width: 100%;
+  cursor: not-allowed;
 }
 
 .Available {
   border-bottom: 1px solid var(--unavailableColor);
   background-color: var(--availableColor);
+  cursor: pointer;
 }
 
 .NotWorking {
@@ -102,9 +105,15 @@
 }
 
 .ReservedByUser {
-
+  background-color: var(--bookedColor);
 }
 
 .ReservedByOther {
-
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    var(--bookedColor) 10px,
+    var(--bookedColor) 20px
+  );
 }

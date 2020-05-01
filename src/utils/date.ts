@@ -17,7 +17,7 @@ export const latestDateByTimeUnit = (dateTimes: moment.Moment[], unit: moment.un
   );
 
 export const getThirtyMinuteIntervals = (startingHour: number, endingHour: number): string[] => {
-  const numberOfSegments = 2 * (endingHour - startingHour + 1);
+  const numberOfSegments = 2 * (endingHour - startingHour) + 1;
   return Array(numberOfSegments)
     .fill(startingHour)
     .map((originalHour, index) => originalHour + Math.floor(index / 2))
@@ -36,7 +36,7 @@ export const getNDays = (startingDate: moment.Moment, count: number): moment.Mom
     (date: moment.Moment, index: number) => date.clone().add(index, 'days'),
   );
 
-export const isWithinRange = (dateTime: moment.Moment, from: moment.Moment, to: moment.Moment): boolean =>
+export const isWithinTimeSlot = (dateTime: moment.Moment, from: moment.Moment, to: moment.Moment): boolean =>
     dateTime.isSameOrAfter(from, 'minutes') && dateTime.isBefore(to, 'minutes');
 
 export const isWorkDay = (date: moment.Moment): boolean =>

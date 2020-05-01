@@ -8,7 +8,7 @@ import {
 } from 'model/schedule';
 import {
   getThirtyMinuteIntervalsAsDateTimes,
-  isWithinRange,
+  isWithinTimeSlot,
 } from 'utils/date';
 
 import styles from './Calendar.module.css';
@@ -56,15 +56,15 @@ export class Day extends React.PureComponent<IDay> {
     const workingHours = schedule.schedule!;
     const bookings = schedule.bookings;
 
-    if (!isWithinRange(dateTime, workingHours.workDayFrom, workingHours.workDayTo)) {
+    if (!isWithinTimeSlot(dateTime, workingHours.workDayFrom, workingHours.workDayTo)) {
       return Availability.NotWorking;
     }
 
-    if (isWithinRange(dateTime, workingHours.breakFrom, workingHours.breakTo)) {
+    if (isWithinTimeSlot(dateTime, workingHours.breakFrom, workingHours.breakTo)) {
       return Availability.OnBreak;
     }
 
-    const existingBooking = bookings.find((booking) => booking.from.isSame(dateTime));
+    const existingBooking = bookings.find((booking) => booking.from.isSame(dateTime, 'minutes'));
 
     if (existingBooking) {
       return existingBooking.isByCurrentUser
