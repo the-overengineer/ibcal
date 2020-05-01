@@ -3,6 +3,7 @@
   --unavailableColor: #E6E6E6;
   --availableColor: #FFFFFF;
   --bookedColor: darkorange;
+  --bookedByUserColor: #51D9F38C;
   --backgroundColor: #FFFFFF;
   --hoursWidth: 60px;
   --dayWidth: 120px;
@@ -108,7 +109,7 @@
 }
 
 .ReservedByUser {
-  background-color: var(--bookedColor);
+  background-color: var(--bookedByUserColor);
 }
 
 .ReservedByOther {
