@@ -14,19 +14,33 @@ import {
 } from './date';
 import { pickOneAtRandom } from './random';
 
-const getEvenDaySchedule = (date: moment.Moment): IWorkSchedule => ({
-  workDayFrom: date.clone().set('hours', 8).set('minute', 0),
-  workDayTo: date.clone().set('hours', 14).set('minute', 0),
-  breakFrom: date.clone().set('hours', 11).set('minute', 0),
-  breakTo: date.clone().set('hours', 11).set('minute', 30),
-});
+export const BOOKING_DURATION_MINUTES: number = 30;
+export const BREAK_DURATION_MINUTES: number = 30;
+export const SHIFT_DURATION_HOURS: number = 6;
 
-const getOddDaySchedule = (date: moment.Moment): IWorkSchedule => ({
-  workDayFrom: date.clone().set('hours', 13).set('minute', 0),
-  workDayTo: date.clone().set('hours', 19).set('minute', 0),
-  breakFrom: date.clone().set('hours', 16).set('minute', 0),
-  breakTo: date.clone().set('hours', 16).set('minute', 30),
-});
+const getEvenDaySchedule = (date: moment.Moment): IWorkSchedule => {
+  const shiftStart = date.clone().set('hours', 8).set('minutes', 0);
+  const breakStart = date.clone().set('hours', 11).set('minutes', 0);
+
+  return {
+    workDayFrom: shiftStart,
+    workDayTo: shiftStart.clone().add(SHIFT_DURATION_HOURS, 'hours'),
+    breakFrom: breakStart,
+    breakTo: breakStart.clone().add(BREAK_DURATION_MINUTES, 'minutes'),
+  };
+}
+
+const getOddDaySchedule = (date: moment.Moment): IWorkSchedule => {
+  const shiftStart = date.clone().set('hours', 13).set('minutes', 0);
+  const breakStart = date.clone().set('hours', 16).set('minutes', 0);
+
+  return {
+    workDayFrom: shiftStart,
+    workDayTo: shiftStart.clone().add(SHIFT_DURATION_HOURS, 'hours'),
+    breakFrom: breakStart,
+    breakTo: breakStart.clone().add(BREAK_DURATION_MINUTES, 'minutes'),
+  };
+};
 
 export const getSchedule = (date: moment.Moment): IWorkSchedule | undefined => {
   const dayOfMonth = date.date();
@@ -64,6 +78,12 @@ const getAvailableSlotTimes = (day: IDaySchedule): moment.Moment[] => {
   );
 }
 
+export const createBooking = (at: moment.Moment, isByCurrentUser: boolean): IBooking => ({
+  from: at.clone(),
+  isByCurrentUser,
+  to: at.clone().add(BOOKING_DURATION_MINUTES, 'minutes'),
+});
+
 /**
  * Fills a calendar schedule with random bookings by "not current user".
  * It will throw an exception if it is impossible to find a booking.
@@ -86,16 +106,11 @@ export const fillWithRandomBookings = (daySchedules: IDaySchedule[], count: numb
   }
 
   const bookingDate = pickOneAtRandom(candidates);
-  const booking: IBooking = {
-    from: bookingDate.clone(),
-    isByCurrentUser: false,
-    to: bookingDate.clone().add(30, 'minutes'),
-  };
+  const booking = createBooking(bookingDate, false);
 
   // Update the day for which the schedule was selected with a new booking
   const updatedSchedules = daySchedules.map((schedule) => {
     if (schedule.date.isSame(booking.from, 'date')) {
-      console.log('updating for', booking.from.format('ddd HH:mm'));
       return {
         ...schedule,
         bookings: [...schedule.bookings, booking],
