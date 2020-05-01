@@ -1,0 +1,7 @@
+--theme-color: darkblue;
+
+.Calendar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--theme-color);
+}
